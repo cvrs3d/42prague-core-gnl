@@ -6,13 +6,15 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:45:01 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/03 12:32:18 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/03 12:44:12 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# ifndef BUFFER_SIZE
 # define BUFFER_SIZE 42
+# endif
 # include <unistd.h>
 # include <stdlib.h>
 
