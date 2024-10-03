@@ -6,12 +6,11 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:50:37 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/03 14:02:56 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/03 16:10:30 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 static int	append(char **r, char b[BUFFER_SIZE + 1], int bytes)
 {

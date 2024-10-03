@@ -1,0 +1,2 @@
+This is a long line that exceeds the typical buffer size and should be read correctly by the get_next_line function without truncation or errors.
+
