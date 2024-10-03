@@ -6,7 +6,7 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:54:35 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/03 12:20:23 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:03:33 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ size_t	ft_strlen(char *str)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\n')
-		{	
+		{
+			i++;
 			return (i);
 		}
 		i++;
