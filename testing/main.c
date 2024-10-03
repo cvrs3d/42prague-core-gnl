@@ -27,6 +27,16 @@ void test_file(const char *filename) {
 }
 
 int main(void) {
+    char *line;
+
+    // Test get_next_line with stdin (fd = 0)
+    printf("<<<<<<<<<TESTING STDIN>>>>>>>>>>>>>>>\n");
+    printf("Enter some text (Ctrl+D to end):\n");
+
+    while ((line = get_next_line(0)) != NULL) {  // 0 is the file descriptor for stdin
+        printf("Read line: %s", line);
+        free(line);
+    }
     // Test a normal file with multiple lines
     test_file("testfile.txt");
     
@@ -50,7 +60,7 @@ int main(void) {
 
     // Test an invalid file descriptor
     printf("<<<<<<<<<TESTING INVALID FD>>>>>>>>>>>>\n");
-    char *line = get_next_line(-1);
+    line = get_next_line(-1);
     printf("Output: %s | Expected: NULL\n", line ? line : "NULL");
     free(line);
 
