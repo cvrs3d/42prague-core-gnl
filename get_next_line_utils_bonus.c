@@ -6,7 +6,7 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:02:13 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/04 14:58:55 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/04 17:38:07 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	ft_memmove(unsigned char *d, unsigned char *s, int n)
 		while (n--)
 			*(--s1) = *(--s2);
 		*s1 = '\0';
-		
 	}
 }
 

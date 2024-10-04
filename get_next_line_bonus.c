@@ -6,7 +6,7 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:46:34 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/04 15:19:32 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:06:42 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,33 @@ static int	put_data(t_fd_list *to)
 	return (1);
 }
 
+static int	remove_node(t_fd_list **head, int fd)
+{
+	t_fd_list	*current;
+	t_fd_list	*previous;
+
+	current = *head;
+	if (current && current->fd == fd)
+	{
+		*head = current->next;
+		free(current);
+		return (-1);
+	}
+	while (current)
+	{
+		if (current->next->fd == fd)
+		{
+			previous = current;
+			previous->next = current->next->next;
+			current = current->next;
+			free(current);
+			return (-1);
+		}
+		current = current->next;
+	}
+	return (-1);
+}
+
 /*
  * Reallocate result with additional memory for bytes in buffer;
  * Memmove bytes to the new result;
@@ -64,7 +91,7 @@ static int	put_data(t_fd_list *to)
  * Return 0 for next chunk;
  * Retunr -1 to handle error;
  */
-static int	get_data_from(t_fd_list *from, unsigned char **to)
+static int	get_data_from(t_fd_list *from, unsigned char **to, t_fd_list **h)
 {
 	unsigned char	*new;
 	int				response;
@@ -84,7 +111,7 @@ static int	get_data_from(t_fd_list *from, unsigned char **to)
 	}
 	response = put_data(from);
 	if (response == 0 && bytelen(from->b) <= 0)
-		return (-1);
+		return (remove_node(h, from->fd));
 	if (response == -1)
 		return (-1);
 	return (0);
@@ -108,7 +135,7 @@ char	*get_next_line(int fd)
 	result[0] = '\0';
 	while (1)
 	{
-		response = get_data_from(current, &result);
+		response = get_data_from(current, &result, &fd_list);
 		if (response == 1)
 			return ((char *)result);
 		if (response == -1)
