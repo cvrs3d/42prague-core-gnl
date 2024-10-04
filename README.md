@@ -4,14 +4,17 @@
 
 ## Description
 
-The `get_next_line` function reads a specified amount of data (default `BUFFER_SIZE` of 42 bytes) from the file pointed to by a file descriptor. It seeks for the newline character (`'\n'`) in the content it reads or EOF and then returns the line terminated with `'\n'`. If that was the last line of the file, the newline character is returned only if it was present at the end.
+The `get_next_line` function reads a specified amount of data (default `BUFFER_SIZE` of 42 bytes) from the file passed via file descriptor. It seeks for the newline character (`'\n'`) in the content it reads or EOF and then returns the line terminated with `'\n'`. Please note that the returned line include the terminating \n character,
+except if the end of file was reached and does not end with a \n character.
 
-All returned strings are null-terminated, making them classic C-strings. The buffer is static, allowing it to persist through all program routines until the very last return.
+All returned strings are null-terminated, making them classic C-strings. The buffer is static, allowing it to persist through all program routine until the very last return.
 
 ## Bonus Description
 
 The bonus functionality retains the same behavior but supports multiple file descriptors. To achieve this, the function utilizes linked lists, where each node stores a pointer to the buffer and the file descriptor.
 For example the proper functionality of reading from 2 files, while changing file descriptors per call, whill appear like this.
+Memory for each file descriptor is being freed when read syscall returns 0, allowing to avoid memory leaks.
+
 ```C
 ~ ./gnl_bonus_test file1.txt file2.txt    
 Line: (file1):Hello, from file1;
