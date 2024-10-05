@@ -6,62 +6,63 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:50:37 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/03 16:10:30 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:08:49 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	append(char **r, char b[BUFFER_SIZE + 1], int bytes)
+static int	set_data(char *buffer, int fd)
 {
-	char	*new_res;
-	size_t	r_len;
+	ssize_t	byteread;
+	int		buflen;
 
-	r_len = ft_strlen(*r);
-	new_res = (char *)malloc(r_len + bytes + 1);
-	if (!new_res)
+	buflen = ft_strlen(buffer);
+	if (buflen > 0)
+		return (buflen);
+	byteread = read(fd, buffer, BUFFER_SIZE);
+	buffer[byteread] = '\0';
+	return (byteread);
+}
+
+static int	get_data(char *buffer, char **res)
+{
+	char	*new;
+	int		bytes;
+
+	bytes = ft_linelen(buffer);
+	if (bytes == 0)
 		return (-1);
-	ft_strcpy(new_res, *r);
-	free(*r);
-	ft_strncat(new_res, b, bytes);
-	*r = new_res;
-	if (ft_contains(b, '\n'))
+	new = (char *)malloc(ft_strlen(*res) + bytes + 1);
+	if (!new)
+		return (-1);
+	ft_memmove(new, *res, ft_strlen(*res));
+	ft_memmove(new + ft_strlen(*res), buffer, bytes);
+	free(*res);
+	*res = new;
+	ft_memmove(buffer, buffer + bytes, ft_strlen(buffer) - bytes);
+	if (ft_isnewline(new))
 		return (1);
 	return (0);
 }
 
-static int	readline(char buffer[BUFFER_SIZE + 1], int fd)
+static int	manage_buffer(char *b, char **r, int fd)
 {
-	ssize_t	bytes_read;
-
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	if (bytes_read <= 0)
-		return (-1);
-	buffer[bytes_read] = '\0';
-	return (bytes_read);
-}
-
-static char	*managebuffer(char b[BUFFER_SIZE + 1], char **r, int fd)
-{
-	ssize_t	bytes_read;
-	ssize_t	offset;
+	int		response;
+	ssize_t	read_result;
 
 	while (1)
 	{
-		bytes_read = readline(b, fd);
-		if (bytes_read <= 0)
-			return (NULL);
-		bytes_read = ft_strlen(b);
-		if (append(r, b, bytes_read) == 1)
-		{
-			offset = 0;
-			while (b[offset] && b[offset] != '\n')
-				offset++;
-			if (b[offset] == '\n')
-				offset++;
-			ft_strcpy(b, b + offset);
-			return (*r);
-		}
+		response = get_data(b, r);
+		if (response > 0)
+			return (1);
+		if (response < 0)
+			return (-1);
+		read_result = set_data(b, fd);
+		if (read_result <= 0 && response == 0)
+			return (1);
+		else if (read_result <= 0)
+			return (1);
 	}
 }
 
@@ -69,25 +70,21 @@ char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1];
 	char		*result;
-	int			bytes;
+	int			response;
 
-	result = (char *)malloc(1);
-	if (fd < 0 || BUFFER_SIZE <= 0 || !result)
+	if (fd < 0 || BUFFER_SIZE < 0)
+		return (NULL);
+	if (buffer[0] == '\0')
+		response = set_data(buffer, fd);
+	result = (char *)malloc(BUFFER_SIZE + 1);
+	if (!result)
 		return (NULL);
 	result[0] = '\0';
-	bytes = ft_strlen(buffer);
-	if (bytes > 0)
+	response = manage_buffer(buffer, &result, fd);
+	if (response == -1)
 	{
-		if (append(&result, buffer, bytes) == 1)
-		{
-			bytes = 0;
-			while (buffer[bytes] && buffer[bytes] != '\n')
-				bytes++;
-			if (buffer[bytes] == '\n')
-				bytes++;
-			ft_strcpy(buffer, buffer + bytes);
-			return (result);
-		}
+		free(result);
+		return (NULL);
 	}
-	return (managebuffer(buffer, &result, fd));
+	return (result);
 }

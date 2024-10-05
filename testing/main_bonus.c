@@ -6,7 +6,7 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 14:12:01 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/04 15:24:04 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:28:49 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ int main(int argc, char **argv)
         printf("Line: %s", line);
         free(line);
         line = get_next_line(f1);
+        printf("Line: %s", line);
+        free(line);
+        line = get_next_line(f2);
+        printf("Line: %s", line);
+        free(line);
+        line = get_next_line(f1);
+        printf("Line: %s", line);
+        free(line);
+	line = get_next_line(f1);
         printf("Line: %s", line);
         free(line);
         line = get_next_line(f2);

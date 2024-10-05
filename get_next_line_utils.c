@@ -6,7 +6,7 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:54:35 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/03 14:03:33 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:08:18 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,58 +16,64 @@ size_t	ft_strlen(char *str)
 {
 	size_t	i;
 
+	i = 0;
 	if (str == NULL)
 		return (0);
-	i = 0;
 	while (str[i] != '\0')
-	{
-		if (str[i] == '\n')
-		{
-			i++;
-			return (i);
-		}
 		i++;
-	}
 	return (i);
 }
 
-int	ft_contains(char *str, char chr)
+int	ft_isnewline(char *str)
 {
+	int	i;
+
+	i = 0;
 	if (str == NULL)
 		return (0);
-	while (*str != 0)
-	{
-		if (*str == chr)
-			return (1);
-		str++;
-	}
+	while (str[i] != '\0' && str[i] != '\n')
+		i++;
+	if (str[i] == '\n')
+		return (1);
 	return (0);
 }
 
-void	ft_strncat(char	*dst, char *src, int n)
+void	ft_memmove(char *d, char *s, int n)
 {
-	while (*dst != '\0')
-		dst++;
-	while (*src != '\0' && n > 0)
+	char	*dst;
+	char	*src;
+
+	dst = d;
+	src = s;
+	if (dst == src)
+		return ;
+	if (dst < src || dst >= src + n)
 	{
-		*dst = *src;
-		dst++;
-		src++;
-		n--;
+		while (n--)
+			*dst++ = *src++;
+		*dst = '\0';
 	}
-	*dst = '\0';
+	else
+	{
+		dst += n;
+		src += n;
+		while (n--)
+			*(--dst) = *(--src);
+		*dst = '\0';
+	}
 	return ;
 }
 
-void	ft_strcpy(char *dst, char *src)
+int	ft_linelen(char *str)
 {
-	if (!dst || !src)
-		return ;
-	while (*src != '\0')
-	{
-		*dst = *src;
-		dst++;
-		src++;
-	}
-	*dst = '\0';
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	if (str[i] == '\n')
+		i++;
+	return (i);
 }

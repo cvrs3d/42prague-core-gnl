@@ -6,12 +6,11 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:46:34 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/04 18:06:42 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:22:32 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
 
 /*
  * Accepts a poiter to the head.

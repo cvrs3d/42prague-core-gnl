@@ -6,12 +6,11 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 13:02:13 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/04 17:38:07 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:23:13 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
 
 int	bytelen(unsigned char *line)
 {

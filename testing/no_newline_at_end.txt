@@ -1,6 +1,1 @@
-No
-New
-Line
-On
-The
-End
+No New Line On The End
