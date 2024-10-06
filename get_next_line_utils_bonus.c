@@ -5,62 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/04 13:02:13 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/04 18:23:13 by yustinov         ###   ########.fr       */
+/*   Created: 2024/10/06 12:38:39 by yustinov          #+#    #+#             */
+/*   Updated: 2024/10/06 13:24:32 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-int	bytelen(unsigned char *line)
+size_t	ft_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
+int	ft_isnewline(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == '\n')
-		{
-			i++;
-			return (i);
-		}
+	if (str == NULL)
+		return (0);
+	while (str[i] != '\0' && str[i] != '\n')
 		i++;
-	}
-	return (i);
+	if (str[i] == '\n')
+		return (1);
+	return (0);
 }
 
-void	ft_memmove(unsigned char *d, unsigned char *s, int n)
+void	ft_memmove(char *d, char *s, int n)
 {
-	unsigned char	*s1;
-	unsigned char	*s2;
+	char	*dst;
+	char	*src;
 
-	s1 = d;
-	s2 = s;
-	if (s1 == s2)
+	dst = d;
+	src = s;
+	if (dst == src)
 		return ;
-	if (s1 < s2 || s1 >= s2 + n)
+	if (dst < src || dst >= src + n)
 	{
 		while (n--)
-			*s1++ = *s2++;
-		*s1 = '\0';
+			*dst++ = *src++;
+		*dst = '\0';
 	}
 	else
 	{
-		s1 += n;
-		s2 += n;
+		dst += n;
+		src += n;
 		while (n--)
-			*(--s1) = *(--s2);
-		*s1 = '\0';
+			*(--dst) = *(--src);
+		*dst = '\0';
 	}
+	return ;
 }
 
-int	contains(unsigned char *str, char chr)
+int	ft_linelen(char *str)
 {
-	while (*str != '\0')
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (0);
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	if (str[i] == '\n')
+		i++;
+	return (i);
+}
+
+void	freenode(t_fd_list **from, int fd)
+{
+	t_fd_list	*current;
+	t_fd_list	*previous;
+	t_fd_list	*to_free;
+
+	current = *from;
+	if (current && current->fd == fd)
 	{
-		if (*str == chr)
-			return (1);
-		str++;
+		*from = current->next;
+		free(current);
+		return ;
 	}
-	return (0);
+	while (current && current->next)
+	{
+		if (current->next->fd == fd)
+		{
+			previous = current;
+			to_free = current->next;
+			previous->next = to_free->next;
+			free(to_free);
+			return ;
+		}
+		current = current->next;
+	}
 }

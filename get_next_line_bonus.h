@@ -6,7 +6,7 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 10:48:04 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/04 13:45:57 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/06 12:56:50 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 typedef struct fd_list
 {
 	int				fd;
-	unsigned char	b[BUFFER_SIZE + 1];
+	char			buffer[BUFFER_SIZE + 1];
 	struct fd_list	*next;
 }		t_fd_list;
-int		contains(unsigned char *str, char chr);
-int		bytelen(unsigned char *line);
-void	ft_memmove(unsigned char *d, unsigned char *s, int n);
 char	*get_next_line(int fd);
+void	freenode(t_fd_list **from, int fd);
+void	ft_memmove(char *d, char *s, int n);
+int		ft_linelen(char *str);
+int		ft_isnewline(char *str);
+size_t	ft_strlen(char *str);
 
 #endif

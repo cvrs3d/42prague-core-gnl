@@ -6,7 +6,7 @@
 /*   By: yustinov <ev.ustinov03@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:50:37 by yustinov          #+#    #+#             */
-/*   Updated: 2024/10/05 19:08:49 by yustinov         ###   ########.fr       */
+/*   Updated: 2024/10/06 13:46:11 by yustinov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	set_data(char *buffer, int fd)
 	if (buflen > 0)
 		return (buflen);
 	byteread = read(fd, buffer, BUFFER_SIZE);
+	if (byteread < 0)
+		return (-1);
 	buffer[byteread] = '\0';
 	return (byteread);
 }
@@ -46,11 +48,13 @@ static int	get_data(char *buffer, char **res)
 	return (0);
 }
 
-static int	manage_buffer(char *b, char **r, int fd)
+static int	manage_buffer(char *b, char **r, int fd, int err)
 {
 	int		response;
 	ssize_t	read_result;
 
+	if (err == -1)
+		return (-1);
 	while (1)
 	{
 		response = get_data(b, r);
@@ -59,6 +63,8 @@ static int	manage_buffer(char *b, char **r, int fd)
 		if (response < 0)
 			return (-1);
 		read_result = set_data(b, fd);
+		if (read_result == -1)
+			return (-1);
 		if (read_result <= 0 && response == 0)
 			return (1);
 		else if (read_result <= 0)
@@ -71,16 +77,20 @@ char	*get_next_line(int fd)
 	static char	buffer[BUFFER_SIZE + 1];
 	char		*result;
 	int			response;
+	int			read_resp;
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
+	read_resp = 0;
 	if (buffer[0] == '\0')
-		response = set_data(buffer, fd);
+		read_resp = set_data(buffer, fd);
+	if (read_resp == -1)
+		return (NULL);
 	result = (char *)malloc(BUFFER_SIZE + 1);
 	if (!result)
 		return (NULL);
 	result[0] = '\0';
-	response = manage_buffer(buffer, &result, fd);
+	response = manage_buffer(buffer, &result, fd, read_resp);
 	if (response == -1)
 	{
 		free(result);
