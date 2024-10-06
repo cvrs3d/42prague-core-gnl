@@ -24,6 +24,23 @@ Line: (file2):My reading stream is still there
 Line: (file1):One more line
 ```
 
+## Return values
+
+Please note that function will return NULL when the file it's trying to open is closed for opening.
+In case of success, function will return a pointer (char *) to classic C string, representing finished line.
+Finished line is line ended either by \n or EOF.
+
+## Importrant note
+
+This function uses defined preprocessor BUFFER_SIZE, what means you can compile c files by yourself and
+set a custom buffer like so:
+```cmd
+cc <your flags> -D BUFFER_SIZE=<size>
+```
+However it is not recomended to put to small size in case to avoid syscall overhead wich can lead to timeouts if your
+program expects fixed output time. Recomended size is standard page size on system: 512, 1024, 4096.
+
+
 ## How to Install
 
 It has its own tests. To run them you will need to clone the repo first.
